@@ -1,0 +1,7 @@
+{
+  "name": "wordApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
