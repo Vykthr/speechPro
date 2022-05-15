@@ -1,0 +1,31 @@
+ion-row.word-list {
+    background-color: #FFFFFFCC;
+    margin: .5rem 0;
+    justify-items: center;
+    align-items: center;
+}
+
+.word-list ion-col ion-item {
+    --background: transparent;
+    color: black;
+}
+
+ion-item ion-icon {
+    fill: black;
+}
+
+/* .orange-btn ion-icon{
+    fill: #FFF;
+} */
+.orange-btn {
+    --background: rgb(255, 77, 0);
+    --border-radius: 50% !important;
+    width: 40px; height: 40px;
+}
+.orange-btn ion-icon {
+    fill: white;
+    font-size: 20px;
+}
+.orange-btn button {
+    --box-shadow: none;
+}

@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'wordApp',
+  appId: 'com.speech.pro',
+  appName: 'speechPro',
   webDir: 'build',
   bundledWebRuntime: false
 };

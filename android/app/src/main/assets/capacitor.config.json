@@ -1,0 +1,6 @@
+{
+	"appId": "com.speech.pro",
+	"appName": "speechPro",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

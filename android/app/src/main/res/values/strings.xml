@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">speechPro</string>
+    <string name="title_activity_main">speechPro</string>
+    <string name="package_name">com.speech.pro</string>
+    <string name="custom_url_scheme">com.speech.pro</string>
+</resources>

@@ -1,7 +1,8 @@
+import React from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
-import Menu from './components/Menu';
+import Menu from './components/Menu/Menu';
 import Page from './pages/Page';
 
 /* Core CSS required for Ionic components to work properly */
@@ -22,27 +23,38 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import './App.css';
+import Home from './pages/Home/Home';
+import Category from './pages/Category/Category';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  return (
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/page/Inbox" />
-            </Route>
-            <Route path="/page/:name" exact={true}>
-              <Page />
-            </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
-  );
+    return (
+        <IonApp>
+            <IonReactRouter>
+                <IonSplitPane contentId="main">
+                    <Menu />
+                    <IonRouterOutlet id="main">
+                        <Route path="/" exact={true}>
+                            <Redirect to="login" />
+                        </Route>
+                        <Route path="/page/:name" exact={true}>
+                            <Page />
+                        </Route>
+                        <Route path="/categories" exact={true} component={Home} />
+                        <Route path="/login" exact={true} component={Login} />
+                        <Route path="/register" exact={true} component={Register} />
+                        <Route path="/categories/:category" exact={true}>
+                            <Category />
+                        </Route>
+                    </IonRouterOutlet>
+                </IonSplitPane>
+            </IonReactRouter>
+        </IonApp>
+    );
 };
 
 export default App;

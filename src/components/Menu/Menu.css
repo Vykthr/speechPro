@@ -1,0 +1,34 @@
+ion-menu ion-content ion-list{
+    background: darkblue !important;
+    padding: 0 !important;
+}
+ion-menu ion-content .head{
+    background: rgb(255, 77, 0) !important;
+}
+ion-menu ion-content {
+  --background: darkblue;
+  padding: 1rem;
+}
+
+ion-menu ion-list-header {
+    color: #fff;
+    text-transform: capitalize;
+    font-size: 1.5rem;
+    padding: 3rem 1rem .5rem;
+}
+ion-menu ion-note {
+    color: #fff;
+    text-transform: lowercase;
+    font-size: 1rem;
+    padding: 0 1rem 1rem;
+    display: block;
+}
+
+ion-item.selected {
+    --background: #fff;
+    color: black;
+}
+ion-item {
+    --background: darkblue;
+    color: white;
+}

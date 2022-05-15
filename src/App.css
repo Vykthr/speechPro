@@ -1,0 +1,7 @@
+body {  
+    --ion-background-color: darkblue !important;
+}
+
+ion-toolbar {
+    --background: transparent
+}
