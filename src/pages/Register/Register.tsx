@@ -34,8 +34,8 @@ const Register : React.FC = () => {
 
     return (
         <IonPage className='register'>
-            <IonHeader style={{ marginTop: '1rem' }}>
-                <IonToolbar>
+            <IonHeader>
+                <IonToolbar style={{ marginTop: '1rem' }}>
                     <IonButtons slot="start">
                         <IonBackButton defaultHref="/" />
                     </IonButtons>

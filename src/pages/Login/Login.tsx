@@ -33,8 +33,8 @@ const Login : React.FC = () => {
 
     return (
         <IonPage className='login'>
-            <IonHeader style={{ marginTop: '1rem' }}>
-                <IonToolbar>
+            <IonHeader>
+                <IonToolbar style={{ marginTop: '1rem' }}>
                     <IonText className='header'>Speech Pro</IonText>
                 </IonToolbar>
             </IonHeader>

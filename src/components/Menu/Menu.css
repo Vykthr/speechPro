@@ -1,12 +1,12 @@
 ion-menu ion-content ion-list{
-    background: darkblue !important;
+    background: white !important;
     padding: 0 !important;
 }
 ion-menu ion-content .head{
-    background: rgb(255, 77, 0) !important;
+    background: green !important;
 }
 ion-menu ion-content {
-  --background: darkblue;
+  --background: white;
   padding: 1rem;
 }
 
@@ -24,11 +24,26 @@ ion-menu ion-note {
     display: block;
 }
 
-ion-item.selected {
-    --background: #fff;
-    color: black;
+.menu ion-item.selected {
+    --background: #000;
+    color: #fff !important;
 }
-ion-item {
-    --background: darkblue;
+.menu ion-item {
+    --background: white;
     color: white;
+}
+
+.menu ion-label {
+    --color: #000 !important
+}
+
+.menu ion-item.selected ion-label {
+    --color: #fff !important
+}
+.menu ion-item.selected ion-icon {
+    fill: #fff !important
+}
+
+.menu ion-icon {
+    margin-inline-end: 12px;
 }

@@ -18,7 +18,7 @@ ion-toolbar {
     background-color: #000;
 }
 .header ion-row.breadcrumb{
-    background-color: rgb(255, 77, 0);
+    background-color: green;
 }
 .header ion-row.breadcrumb ion-item{
     --background: transparent;
@@ -32,7 +32,7 @@ ion-toolbar {
 }
 
 .header ion-col.active {
-    background: rgb(255, 77, 0);
+    background: green;
 }
 
 .body-padding {

@@ -13,12 +13,12 @@ const AppContainer: React.FC<AppContainerProps> = ({ children, category = '' }) 
     
     return (
         <IonPage>
-            <IonHeader  style={{ marginTop: '1.2rem' }}>
-                <IonToolbar>
-                <IonButtons slot="start">
-                    <IonMenuButton />
-                </IonButtons>
-                <IonSearchbar placeholder='Search' />
+            <IonHeader>
+                <IonToolbar style={{ marginTop: '1.2rem' }}>
+                    <IonButtons slot="start">
+                        <IonMenuButton />
+                    </IonButtons>
+                    <IonSearchbar placeholder='Search' />
                 </IonToolbar>
             </IonHeader>
 

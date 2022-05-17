@@ -1,7 +1,11 @@
 body {  
-    --ion-background-color: darkblue !important;
+    --ion-background-color: white !important;
 }
 
 ion-toolbar {
     --background: transparent
+}
+
+ion-header {
+    background: green
 }

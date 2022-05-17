@@ -40,7 +40,7 @@ const Menu: React.FC = () => {
     }, [userInfo])
 
     return (
-        <IonMenu contentId="main" type="overlay">
+        <IonMenu contentId="main" type="overlay" className='menu'>
             <IonContent>
                 <IonList>
                     <div className='head'>
@@ -51,8 +51,8 @@ const Menu: React.FC = () => {
                         return (
                         <IonMenuToggle key={index} autoHide={false}>
                             <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                            <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                            <IonLabel>{appPage.title}</IonLabel>
+                                <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                                <IonLabel>{appPage.title}</IonLabel>
                             </IonItem>
                         </IonMenuToggle>
                         );
