@@ -9,3 +9,7 @@ ion-toolbar {
 ion-header {
     background: green
 }
+
+ion-header.ios {
+    padding-top: 1.2rem !important;
+}

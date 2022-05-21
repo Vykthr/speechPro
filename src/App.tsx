@@ -28,6 +28,9 @@ import Home from './pages/Home/Home';
 import Category from './pages/Category/Category';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import Play from './pages/Play/Play';
+import Admin from './pages/Admin/Admin';
+import Edit from './pages/Edit/Edit';
 
 setupIonicReact();
 
@@ -45,10 +48,20 @@ const App: React.FC = () => {
                             <Page />
                         </Route>
                         <Route path="/categories" exact={true} component={Home} />
+                        <Route path="/admin" exact={true} component={Admin} />
                         <Route path="/login" exact={true} component={Login} />
                         <Route path="/register" exact={true} component={Register} />
+
                         <Route path="/categories/:category" exact={true}>
                             <Category />
+                        </Route>
+                        <Route path="/edit" exact={true} component={Edit} />
+                        <Route path="/edit/:id" exact={true}>
+                            <Edit />
+                        </Route>
+
+                        <Route path="/play/:id" exact={true}>
+                            <Play />
                         </Route>
                     </IonRouterOutlet>
                 </IonSplitPane>

@@ -12,25 +12,19 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, logOutOutline, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, personOutline, personSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
-import { userInfo } from '../../api/handler';
+import { userInfo, setUserInfo } from '../../api/handler';
 
 interface AppPage {
     url: string;
     iosIcon: string;
     mdIcon: string;
     title: string;
+    show?: boolean;
 }
 
-const appPages: AppPage[] = [
-    {
-        title: 'Categories',
-        url: '/categories',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
-    }
-];
+
 
 const Menu: React.FC = () => {
     const location = useLocation();
@@ -38,6 +32,22 @@ const Menu: React.FC = () => {
     useEffect(() => {
         setUser(userInfo)
     }, [userInfo])
+
+    const appPages: AppPage[] = [
+        {
+            title: 'Categories',
+            url: '/categories',
+            iosIcon: mailOutline,
+            mdIcon: mailOutline
+        },
+        {
+            title: 'Admin',
+            url: '/admin',
+            iosIcon: personOutline,
+            mdIcon: personOutline,
+            show: Boolean(user?.admin)
+        },
+    ];
 
     return (
         <IonMenu contentId="main" type="overlay" className='menu'>
@@ -47,16 +57,20 @@ const Menu: React.FC = () => {
                         <IonListHeader>{user?.username || ''}</IonListHeader>
                         <IonNote>{user?.email || ''}</IonNote>
                     </div>
-                    {appPages.map((appPage, index) => {
-                        return (
+                    {appPages.filter(({ show = true }) => Boolean(show)).map(({ show = true, ...appPage }, index) => (
                         <IonMenuToggle key={index} autoHide={false}>
                             <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
                                 <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
                                 <IonLabel>{appPage.title}</IonLabel>
                             </IonItem>
                         </IonMenuToggle>
-                        );
-                    })}
+                    ))}
+                    <IonMenuToggle autoHide={false} className='btm'>
+                        <IonItem onClick={() => { setUserInfo({}) }} routerLink={'/'} routerDirection="none" lines="none" detail={false}>
+                            <IonIcon slot="start" icon={logOutOutline} />
+                            <IonLabel>Logout</IonLabel>
+                        </IonItem>
+                    </IonMenuToggle>
                 </IonList>
             </IonContent>
         </IonMenu>

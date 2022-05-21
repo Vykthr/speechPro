@@ -1,0 +1,20 @@
+.admin {
+    border-bottom: 1px solid #000;
+    padding: .5rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.admin ion-text p {
+    color: #000;
+    margin: .5rem 0;
+}
+
+.admin .color-green {
+    color: green;
+}
+
+.new-btn {
+    background-color: green;
+    color: #fff
+}

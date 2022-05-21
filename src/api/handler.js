@@ -9,7 +9,9 @@ const storage = getStorage(app);
 const auth = getAuth();
 
 export let words = [];
-export let userInfo = [];
+export let userInfo = {};
+
+export const setUserInfo = (val) => userInfo = val;
 
 export const setUpDb  = async () => {
     return new Promise((resolve, reject) => {
@@ -132,6 +134,80 @@ export const setUser = async (payload, userId) => {
             reject(err)
         }
     })
+}
+
+export const addWord  = async (payload) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { englishAudioFile, dharugAudioFile, ...datum } = payload;
+
+            const docRef = await addDoc(collection(db, "words"), datum);
+
+            if(englishAudioFile) {
+                const englishRef = ref(storage, `audios/${docRef.id}/english.mp3`);
+                const englishTask = await uploadBytes(englishRef, englishAudioFile);
+                const englishAudioUrl = await getDownloadURL(englishRef)
+                await updateDoc(docRef, {
+                    englishAudioUrl,
+                    docId: docRef.id
+                });
+            }
+
+            if(dharugAudioFile) {
+                const dharugRef = ref(storage, `audios/${docRef.id}/dharug.mp3`);
+                const dharugTask = await uploadBytes(dharugRef, dharugAudioFile);
+                const dharugAudioUrl = await getDownloadURL(dharugRef)
+                await updateDoc(docRef, {
+                    dharugAudioUrl,
+                    docId: docRef.id
+                });
+            }
+
+            resolve('finished')
+        }
+        catch(err) {
+            reject(err)
+        }
+    })
+
+}
+
+export const updateWord  = async (payload) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { englishAudioFile, dharugAudioFile, docId, ...datum } = payload;
+
+            if(docId) {
+                const docRef = await addDoc(collection(db, "words"), datum);
+    
+                await updateDoc(doc(db, 'words', docId), { ...datum });
+    
+                if(englishAudioFile) {
+                    const englishRef = ref(storage, `audios/${docRef.id}/english.mp3`);
+                    const englishTask = await uploadBytes(englishRef, englishAudioFile);
+                    const englishAudioUrl = await getDownloadURL(englishRef)
+                    await updateDoc(doc(db, 'words', docId), {
+                        englishAudioUrl
+                    });
+                }
+    
+                if(dharugAudioFile) {
+                    const dharugRef = ref(storage, `audios/${docRef.id}/dharug.mp3`);
+                    const dharugTask = await uploadBytes(dharugRef, dharugAudioFile);
+                    const dharugAudioUrl = await getDownloadURL(dharugRef)
+                    await updateDoc(doc(db, 'words', docId), {
+                        dharugAudioUrl
+                    });
+                }
+            }
+            resolve('finished')
+
+        }
+        catch(err) {
+            reject(err)
+        }
+    })
+
 }
 
 

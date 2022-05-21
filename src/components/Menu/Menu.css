@@ -41,9 +41,16 @@ ion-menu ion-note {
     --color: #fff !important
 }
 .menu ion-item.selected ion-icon {
-    fill: #fff !important
+    color: #fff !important
 }
 
 .menu ion-icon {
     margin-inline-end: 12px;
+    color: #000;
+}
+
+.menu .btm {
+    bottom: 15px;
+    position: absolute;
+    left: 10px;
 }
