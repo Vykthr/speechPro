@@ -1,7 +1,7 @@
 import app from "./config";
 import data from '../data.json'
-import { collection, addDoc, getFirestore, updateDoc, getDocs, getDoc, doc, setDoc } from "firebase/firestore"; 
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, getFirestore, updateDoc, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore"; 
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const db = getFirestore(app);
@@ -178,12 +178,11 @@ export const updateWord  = async (payload) => {
             const { englishAudioFile, dharugAudioFile, docId, ...datum } = payload;
 
             if(docId) {
-                const docRef = await addDoc(collection(db, "words"), datum);
     
                 await updateDoc(doc(db, 'words', docId), { ...datum });
     
                 if(englishAudioFile) {
-                    const englishRef = ref(storage, `audios/${docRef.id}/english.mp3`);
+                    const englishRef = ref(storage, `audios/${docId}/english.mp3`);
                     const englishTask = await uploadBytes(englishRef, englishAudioFile);
                     const englishAudioUrl = await getDownloadURL(englishRef)
                     await updateDoc(doc(db, 'words', docId), {
@@ -192,13 +191,37 @@ export const updateWord  = async (payload) => {
                 }
     
                 if(dharugAudioFile) {
-                    const dharugRef = ref(storage, `audios/${docRef.id}/dharug.mp3`);
+                    const dharugRef = ref(storage, `audios/${docId}/dharug.mp3`);
                     const dharugTask = await uploadBytes(dharugRef, dharugAudioFile);
                     const dharugAudioUrl = await getDownloadURL(dharugRef)
                     await updateDoc(doc(db, 'words', docId), {
                         dharugAudioUrl
                     });
                 }
+            }
+            resolve('finished')
+
+        }
+        catch(err) {
+            reject(err)
+        }
+    })
+
+}
+
+export const deleteWord  = async (docId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if(docId) {
+                await deleteDoc(doc(db, "words", docId));
+
+                const englishRef = ref(storage, `audios/${docId}/english.mp3`);
+                const dharugRef = ref(storage, `audios/${docId}/dharug.mp3`);
+
+                // Delete the file
+                await deleteObject(englishRef)
+                await deleteObject(dharugRef)
             }
             resolve('finished')
 

@@ -1,6 +1,7 @@
 ion-menu ion-content ion-list{
     background: white !important;
     padding: 0 !important;
+    height: 100%;
 }
 ion-menu ion-content .head{
     background: green !important;

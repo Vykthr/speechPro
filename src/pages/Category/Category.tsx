@@ -16,14 +16,14 @@ const Category: React.FC = () => {
     }, [words])
 
     const filter = (e: any) => {
-        const searchVal = e.detail.value;
+        const searchVal = String(e.detail.value).toLowerCase();
         if(searchVal) {
             const res = wrds.filter(w => (
-                w.english_language.indexOf(searchVal) > -1
+                String(w.english_language).toLowerCase().indexOf(searchVal) > -1
                 ||
-                w.dharug_language.indexOf(searchVal) > -1
+                String(w.dharug_language).toLowerCase().indexOf(searchVal) > -1
                 ||
-                w.category.indexOf(searchVal) > -1
+                String(w.category).toLowerCase().indexOf(searchVal) > -1
             ))
             setWords(res)
         } else {

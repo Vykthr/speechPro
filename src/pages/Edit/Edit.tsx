@@ -2,19 +2,21 @@ import React, { useRef } from 'react';
 import './Edit.css';
 import AppContainer from '../../components/AppContainer/AppContainer';
 import { useHistory, useParams } from 'react-router';
-import { IonButton, IonButtons, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from '@ionic/react';
+import { IonButton, IonGrid, IonInput, IonItem, IonLabel, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea, useIonAlert } from '@ionic/react';
 import { addOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
-import { words, updateWord, addWord } from '../../api/handler';
+import { words, updateWord, addWord, deleteWord, getWords } from '../../api/handler';
 
 const Play: React.FC = () => {
     const { id } = useParams<{ id: string; }>();
+    const [ present ] = useIonAlert();
     const history = useHistory()
     const englishFileRef = useRef(null)
     const dharugFileRef = useRef(null)
 
     const [ errors, setErrors ] = useState<any>({})
     const [ processing, setProcessing ] = useState<boolean>(false)
+    const [ deleting, setDeleting ] = useState<boolean>(false)
     const [ success, setSuccess ] = useState<boolean>(false)
     const [ newCategory, setNewCategory ] = useState<boolean>(false)
 
@@ -39,10 +41,16 @@ const Play: React.FC = () => {
 
         try {
             setProcessing(true)
-            const res = (id) ? await updateWord(word) : await addWord(word)
-            alert('success')
-
-            if(!id) history.goBack();
+            const res = (id) ? await updateWord(word) : await addWord(word);
+            await getWords();
+            present({
+                header: `${id ? 'Update' : 'Upload'} Success`,
+                message: `Word has been successfully ${id ? 'Updated' : 'Uploaded'}`,
+                buttons: [
+                    'OK'
+                ],
+            })
+            history.push('/admin');
         }
         catch (err: any) {
             setErrors({ message: err?.message || 'An error occurred' })
@@ -50,6 +58,40 @@ const Play: React.FC = () => {
         finally {
             setProcessing(false)
         }
+    }
+
+    const handleDelete = () => {
+        present({
+            header: 'Delete Word?',
+            message: 'kindly confirm that you would like to delete this word?',
+            buttons: [
+                'Cancel',
+                { 
+                    text: 'Ok', 
+                    handler: async (d) => {
+                        try {
+                            setDeleting(true)
+                            await deleteWord(id)
+                            await getWords();
+                            present({
+                                header: `Delete Success`,
+                                message: `Word has been successfully deleted`,
+                                buttons: [
+                                    'OK'
+                                ],
+                            })
+                            history.push('/admin');
+                        }
+                        catch (err) {
+                            alert('Error deleting');
+                        }
+                        finally {
+                            setDeleting(false)
+                        }
+                    }
+                },
+            ],
+        })
     }
 
     useEffect(() => {
@@ -131,7 +173,6 @@ const Play: React.FC = () => {
                         <IonLabel position="stacked">English Audio</IonLabel>
                         <input 
                             name='englishAudioFile' type='file' accept='audio/*'
-                            ref={englishFileRef}
                             onChange={(e) => {
                                 var files : any = e?.target?.files
                                 if(Boolean(files[0])) {
@@ -150,7 +191,7 @@ const Play: React.FC = () => {
                         <IonLabel position="stacked">Dharug Audio</IonLabel>
                         <input 
                             name='dharugAudioFile' type='file'
-                            ref={dharugFileRef}  accept='audio/*'
+                            accept='audio/*'
                             onChange={(e) => {
                                 var files : any = e?.target?.files
                                 if(Boolean(files[0])) {
@@ -166,17 +207,25 @@ const Play: React.FC = () => {
                         />
                         { errors?.dharugAudioFile && <small>{errors?.dharugAudioFile || ''}</small>}
 
-                        <IonButton onClick={() => handleUpload()}>
+                        <IonButton onClick={() => handleUpload()} disabled={processing || deleting}>
                             {
-                                processing ? id ? 'Editing...' : 'Adding...' : 
+                                processing ? id ? 'Updating...' : 'Adding...' : 
                                 <>
-                                    { id ? 'Edit' : 'Add'}
+                                    { id ? 'Update' : 'Add'}
                                 </>
                             }
                         </IonButton>
 
                         { errors?.message && <small style={{ textAlign: 'center', display: 'block' }}>{errors?.message || ''}</small>}
 
+
+
+                        {
+                            Boolean(id) &&
+                            <IonButton fill='clear' className='delete-btn' disabled={deleting || processing} style={{ marginTop: '2rem' }} onClick={() => handleDelete()}>
+                                { deleting ? 'Deleting...' : 'Delete word' }
+                            </IonButton>
+                        }
                     </>
                 }
             </IonGrid>

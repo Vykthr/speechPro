@@ -14,6 +14,14 @@
     color: green;
 }
 
+.admin .icon-black ion-icon {
+    color: black;
+}
+
+.admin .icon-black {
+    color: black;
+}
+
 .new-btn {
     background-color: green;
     color: #fff

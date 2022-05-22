@@ -21,7 +21,6 @@ const Play: React.FC = () => {
     }, [words, id])
 
     const playAudio = (filePath: string, playing: string) => {
-        setPlaying(playing)
         if(file) {
             stopAudio()
             setFile(Media.create(filePath));
@@ -40,6 +39,7 @@ const Play: React.FC = () => {
     useEffect(() => {
         if(file) {
             file.play()
+            setPlaying(playing)
         };
     }, [file])
 
@@ -64,6 +64,11 @@ const Play: React.FC = () => {
     })
 
     file?.onSuccess.subscribe((ob) => {
+        setPlaying(null)
+    })
+
+
+    file?.onStatusUpdate.subscribe(() => {
         setPlaying(null)
     })
 
@@ -96,7 +101,7 @@ const Play: React.FC = () => {
                             </IonButton>
                         </div>
                         <div className='item'>
-                            <p style={{ fontSize: 24 }}>
+                            <p style={{ fontSize: 24, color: '#000' }}>
                                 { word.dharug_language }
                             </p>
                             <IonButton onClick={() => playAudio(word.dharugAudioUrl, '2')} fill='clear' slot='end' className='orange-btn'>

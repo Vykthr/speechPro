@@ -49,8 +49,12 @@ const Menu: React.FC = () => {
         },
     ];
 
+    const getRoute = () => {
+        return Boolean(location.pathname.includes('login') || location.pathname.includes('register'))
+    }
+
     return (
-        <IonMenu contentId="main" type="overlay" className='menu'>
+        <IonMenu contentId="main" type="overlay" className='menu' disabled={getRoute()}>
             <IonContent>
                 <IonList>
                     <div className='head'>

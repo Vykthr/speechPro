@@ -74,3 +74,8 @@ ion-grid.edit ion-text {
 .edit ion-item:focus, .edit ion-item:active {
     border-color: var(--ion-color-primary);
 }
+
+.edit .delete-btn {
+    --background: brown;
+    color: white
+}

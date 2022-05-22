@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import AppContainer from '../../components/AppContainer/AppContainer';
-import { IonCol, IonIcon, IonItem, IonRow, IonText, IonRouterLink, IonNav, IonButton} from '@ionic/react';
+import { IonCol, IonIcon, IonItem, IonRow, IonText, IonRouterLink, IonNav, IonButton, useIonAlert, IonLoading} from '@ionic/react';
 import { earth } from 'ionicons/icons';
 import { words, getWords } from '../../api/handler';
 
@@ -10,21 +10,38 @@ import { setUpDb } from '../../api/handler';
 const Home: React.FC = () => {
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ wrds, setWords ] = useState<Array<any>>([])
+    const [ showLoading, setShowLoading ] = useState(true);
+    const [ present ] = useIonAlert();
 
     const init = async () => {
-        const res = await getWords();
-        setWords(res)
+        setShowLoading(true)
+        try {
+            const res = await getWords();
+            setWords(res)
+        }
+        catch {
+            present({
+                header: `Error`,
+                message: `An error occurred while updating list, please try again`,
+                buttons: [
+                    'OK'
+                ],
+            })
+        }
+        finally {
+            setShowLoading(false)
+        }
     }
 
     const filter = (e: any) => {
-        const searchVal = e.detail.value;
+        const searchVal = String(e.detail.value).toLowerCase();
         if(searchVal) {
             const res = wrds.filter(w => (
-                w.english_language.indexOf(searchVal) > -1
+                String(w.english_language).toLowerCase().indexOf(searchVal) > -1
                 ||
-                w.dharug_language.indexOf(searchVal) > -1
+                String(w.dharug_language).toLowerCase().indexOf(searchVal) > -1
                 ||
-                w.category.indexOf(searchVal) > -1
+                String(w.category).toLowerCase().indexOf(searchVal) > -1
             ))
             setWords(res)
         } else {
@@ -56,6 +73,14 @@ const Home: React.FC = () => {
                     ))
                 }
             </IonRow>
+            {
+                showLoading &&
+                <IonLoading
+                    isOpen={showLoading}
+                    // onDidDismiss={() => setShowLoading(false)}
+                    message={'Updating List...'}
+                />
+            }
         </AppContainer>
 
     );
