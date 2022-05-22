@@ -10,10 +10,10 @@ import { words } from '../../api/handler';
 
 const Play: React.FC = () => {
     const { id } = useParams<{ id: string; }>();
-    const [ file, setFile ] = useState<MediaObject | null>()
     const [ wrds, setWords ] = useState<Array<any>>([])
     const [ word, setWord ] = useState<any>({})
     const [ playing, setPlaying ] = useState<string | null>(null)
+    const [ toPlay, setToPlay ] = useState<string | null>(null)
 
     useEffect(() => {
         setWords(words)
@@ -21,56 +21,63 @@ const Play: React.FC = () => {
     }, [words, id])
 
     const playAudio = (filePath: string, playing: string) => {
-        if(file) {
-            stopAudio()
-            setFile(Media.create(filePath));
-        } else {
-            setFile(Media.create(filePath));
-        }
+        const file = Media.create(filePath)
+        setPlaying(playing)
+
+        file?.onError.subscribe((ob) => {
+            switch(ob) {
+                case 1:
+                    alert('Error: Aborted');
+                    break;
+                case 2:
+                    alert('Network error');
+                    break;
+                case 3:
+                    alert('Decode error');
+                    break;
+                case 4:
+                    alert('Unsupported File');
+                    break;
+                default:
+                    alert(`An error occurred`)
+            }
+            setPlaying(null)
+        })
+
+        file?.onStatusUpdate.subscribe((ob) => {
+            switch(ob) {
+                case 0:
+                    alert('No File');
+                    break;
+                case 1:
+                    setPlaying(playing)
+                    break;
+                case 2:
+                    setPlaying(playing)
+                    break;
+                case 3:
+                    alert('Paused');
+                    break;
+                case 4:
+                    setPlaying(null)
+                    break;
+                default:
+                    setPlaying(null)
+                    break;
+            }
+        })
+        file.play();
+
     }
 
-    const stopAudio = () => {
-        if(file) {
-            file.stop()
-            setFile(null)
-        };
-    }
-
-    useEffect(() => {
-        if(file) {
-            file.play()
-            setPlaying(playing)
-        };
-    }, [file])
-
-    file?.onError.subscribe((ob) => {
-        switch(ob) {
-            case 1:
-                alert('Error: Aborted');
-                break;
-            case 2:
-                alert('Network error');
-                break;
-            case 3:
-                alert('Decode error');
-                break;
-            case 4:
-                alert('Unsupported File');
-                break;
-            default:
-                alert(`An error occurred`)
-        }
-        setPlaying(null)
-    })
-
-    file?.onSuccess.subscribe((ob) => {
-        setPlaying(null)
-    })
+    // const stopAudio = () => {
+    //     if(file) {
+    //         file.stop()
+    //         setFile(null)
+    //     };
+    // }
 
 
-    file?.onStatusUpdate.subscribe(() => {
-        setPlaying(null)
-    })
 
 
 // export declare enum MEDIA_STATUS {
