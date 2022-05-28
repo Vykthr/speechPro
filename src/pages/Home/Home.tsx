@@ -11,6 +11,7 @@ const Home: React.FC = () => {
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ wrds, setWords ] = useState<Array<any>>([])
     const [ showLoading, setShowLoading ] = useState(true);
+    const [ processing, setProcessing ] = useState(false);
     const [ present ] = useIonAlert();
 
     const init = async () => {
@@ -30,6 +31,25 @@ const Home: React.FC = () => {
         }
         finally {
             setShowLoading(false)
+        }
+    }
+
+    const setup = async () => {
+        setProcessing(true)
+        try {
+            await setUpDb();
+        }
+        catch {
+            present({
+                header: `Error`,
+                message: `An error occurred while updating list, please try again`,
+                buttons: [
+                    'OK'
+                ],
+            })
+        }
+        finally {
+            setProcessing(false)
         }
     }
 
@@ -59,6 +79,9 @@ const Home: React.FC = () => {
 
     return (
         <AppContainer searchFunction={filter}>
+            {/* <IonButton disabled={processing} onClick={setup}>
+                { processing ? 'Loading' : 'SetUp DB' }
+            </IonButton> */}
             <IonRow>
                 {
                     [ ...new Set(wrds.map(word => word.category))].map((category, key) => (

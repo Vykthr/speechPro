@@ -103,9 +103,12 @@ const Play: React.FC = () => {
                             <p>
                                 { word.english_language }
                             </p>
-                            <IonButton color='light' fill='clear' onClick={() => playAudio(word.englishAudioUrl, '1')}>
-                                <IonIcon icon={playing == '1' ? pause : play} />
-                            </IonButton>
+                            {
+                                Boolean(word?.englishAudioUrl) &&
+                                <IonButton color='light' fill='clear' onClick={() => playAudio(word.englishAudioUrl, '1')}>
+                                    <IonIcon icon={playing == '1' ? pause : play} />
+                                </IonButton>
+                            }
                         </div>
                         <div className='item'>
                             <p style={{ fontSize: 24, color: '#000' }}>

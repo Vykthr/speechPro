@@ -20,44 +20,50 @@ export const setUpDb  = async () => {
             data.map(async ({ english_audio_path, dharug_audio_path, ...datum }) => {
                 const docRef = await addDoc(collection(db, "words"), datum);
 
-                await fetch(`../assets/${english_audio_path}`).then(resp => resp.blob())
-                .then(async (blob) => {
-                    const fileReader = new FileReader();
-                    fileReader.readAsArrayBuffer(blob)
-                    fileReader.onload = async function (e) {
-                        const file = e.target.result;
-                        const englishRef = ref(storage, `audios/${docRef.id}/english.mp3`);
-                        const englishTask = await uploadBytes(englishRef, file);
-                        const englishAudioUrl = await getDownloadURL(englishRef)
-                        
-                        await fetch(`../assets/${dharug_audio_path}`).then(resp => resp.blob())
-                        .then(async (blob) => {
-                            const fileReader = new FileReader();
-                            fileReader.readAsArrayBuffer(blob)
-                            fileReader.onload = async function (e) {
-                                const file = e.target.result;
-                                const dharugRef = ref(storage, `audios/${docRef.id}/dharug.mp3`);
-                                const dharugTask = await uploadBytes(dharugRef, file);
-                                const dharugAudioUrl = await getDownloadURL(dharugRef)
-                                
-                                await updateDoc(docRef, {
-                                    englishAudioUrl,
-                                    dharugAudioUrl,
-                                    docId: docRef.id
-                                });
-                                count += 1;
-                                console.log(count, data.length)
-                                if(count === data.length) {
-                                    console.log('completed')
-                                    resolve('finished')
-                                };
-                            };
-                        });
-                    };
-                });
+                if(english_audio_path){
+                    await fetch(`../assets/${english_audio_path}`).then(resp => resp.blob())
+                    .then(async (blob) => {
+                        const fileReader = new FileReader();
+                        fileReader.readAsArrayBuffer(blob)
+                        fileReader.onload = async function (e) {
+                            const file = e.target.result;
+                            const englishRef = ref(storage, `audios/${docRef.id}/english.mp3`);
+                            const englishTask = await uploadBytes(englishRef, file);
+                            const englishAudioUrl = await getDownloadURL(englishRef)
+                            
+                            await updateDoc(docRef, {
+                                englishAudioUrl,
+                                docId: docRef.id
+                            });
+                        };
+                    });
+                }
 
+                if(dharug_audio_path) {
+                    await fetch(`../assets/${dharug_audio_path}`).then(resp => resp.blob())
+                    .then(async (blob) => {
+                        const fileReader = new FileReader();
+                        fileReader.readAsArrayBuffer(blob)
+                        fileReader.onload = async function (e) {
+                            const file = e.target.result;
+                            const dharugRef = ref(storage, `audios/${docRef.id}/dharug.mp3`);
+                            const dharugTask = await uploadBytes(dharugRef, file);
+                            const dharugAudioUrl = await getDownloadURL(dharugRef)
+                            
+                            await updateDoc(docRef, {
+                                dharugAudioUrl,
+                                docId: docRef.id
+                            });
+    
+                        };
+                    });
+                }
 
-                
+                count += 1;
+                console.log(count, data.length)
+                if(count === data.length) {
+                    resolve('finished')
+                };
             })
         }
         catch(err) {
