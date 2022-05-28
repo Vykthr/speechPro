@@ -12,7 +12,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, logOutOutline, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, personOutline, personSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, earthOutline, folderOpenOutline, heartOutline, heartSharp, logOutOutline, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, personOutline, personSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
 import { userInfo, setUserInfo } from '../../api/handler';
 
@@ -37,8 +37,14 @@ const Menu: React.FC = () => {
         {
             title: 'Categories',
             url: '/categories',
-            iosIcon: mailOutline,
-            mdIcon: mailOutline
+            iosIcon: folderOpenOutline,
+            mdIcon: folderOpenOutline
+        },
+        {
+            title: 'All words',
+            url: '/words',
+            iosIcon: earthOutline,
+            mdIcon: earthOutline
         },
         {
             title: 'Admin',

@@ -31,6 +31,7 @@ import Register from './pages/Register/Register';
 import Play from './pages/Play/Play';
 import Admin from './pages/Admin/Admin';
 import Edit from './pages/Edit/Edit';
+import Words from './pages/Words/Words';
 
 setupIonicReact();
 
@@ -48,6 +49,7 @@ const App: React.FC = () => {
                             <Page />
                         </Route>
                         <Route path="/categories" exact={true} component={Home} />
+                        <Route path="/words" exact={true} component={Words} />
                         <Route path="/admin" exact={true} component={Admin} />
                         <Route path="/login" exact={true} component={Login} />
                         <Route path="/register" exact={true} component={Register} />
